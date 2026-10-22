@@ -1,0 +1,122 @@
+@BGT_Test_HostAddress = http://localhost:5286
+
+### Create order (201 + OrderId)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "items": [
+    { "productId": 1, "quantity": 2 }
+  ]
+}
+
+### Unknown product (404)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "items": [
+    { "productId": 999999, "quantity": 1 }
+  ]
+}
+
+### Quantity exceeds stock (409)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "items": [
+    { "productId": 1, "quantity": 10000 }
+  ]
+}
+
+### Validation error (400)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "items": []
+}
+
+### Multiple items (201)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 2,
+  "items": [
+    { "productId": 1, "quantity": 1 },
+    { "productId": 5, "quantity": 3 }
+  ]
+}
+
+### Unknown customer (404)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 999999,
+  "items": [
+    { "productId": 1, "quantity": 1 }
+  ]
+}
+
+### Inactive product (422)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "items": [
+    { "productId": 3, "quantity": 1 }
+  ]
+}
+
+### Out of stock (409)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "items": [
+    { "productId": 4, "quantity": 1 }
+  ]
+}
+
+### Quantity exceeds low stock (409)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "items": [
+    { "productId": 2, "quantity": 6 }
+  ]
+}
+
+### Duplicate product (400)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "items": [
+    { "productId": 1, "quantity": 1 },
+    { "productId": 1, "quantity": 2 }
+  ]
+}
+
+### Invalid quantity (400)
+POST {{BGT_Test_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "items": [
+    { "productId": 1, "quantity": 0 }
+  ]
+}
